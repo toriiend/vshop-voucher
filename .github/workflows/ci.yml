@@ -35,3 +35,28 @@ jobs:
           -Dsonar.organization=toriiend
           -Dsonar.sources=src
           -Dsonar.java.binaries=.
+
+          
+  non-functional-testing:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Tích hợp Performance Test (Poka-Yoke cho tốc độ)
+      - name: Run k6 Load Test
+        uses: grafana/k6-action@v0.3.0
+        with:
+          filename: tests/performance-test.js
+
+  acceptance-and-chaos:
+    needs: non-functional-testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Tích hợp Chaos Engineering (Jidoka cho tính bền bỉ)
+      - name: Chaos Scenario - Voucher Service Outage
+        run: |
+          chmod +x scripts/chaos-scenario.sh
+          ./scripts/chaos-scenario.sh      
