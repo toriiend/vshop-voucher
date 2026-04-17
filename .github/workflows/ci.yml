@@ -31,7 +31,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
-          -Dsonar.projectKey=vshop-voucher
-          -Dsonar.organization=Toriiend
+          -Dsonar.projectKey=toriiend_vshop-voucher
+          -Dsonar.organization=toriiend
           -Dsonar.sources=src
           -Dsonar.java.binaries=.
