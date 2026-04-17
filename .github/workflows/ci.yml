@@ -1,0 +1,23 @@
+name: V-Shop CI Pipeline
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Download JUnit Console
+      run: wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.3/junit-platform-console-standalone-1.9.3.jar -O junit.jar
+
+    - name: Compile and Run Tests
+      run: |
+        javac -cp junit.jar src/*.java
+        java -jar junit.jar -cp src --scan-class-path
